@@ -1,0 +1,20 @@
+{
+  "name": "Stubbook",
+  "short_name": "Stubbook",
+  "description": "Scan the tickets from your trips and keep them on a collage.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#efe9de",
+  "theme_color": "#efe9de",
+  "icons": [
+    { "src": "/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "share_target": {
+    "action": "/share-target",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": { "files": [{ "name": "file", "accept": ["image/*", "application/pdf", ".pdf"] }] }
+  }
+}

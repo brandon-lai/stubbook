@@ -90,19 +90,22 @@ export function parseTicket(words: OcrWord[], barcodes: DecodedBarcode[], now = 
 
   // 6. Carrier or venue, and a title: the line printed largest is usually the
   //    brand (travel) or the act (events).
+  // Column labels and boilerplate are never a carrier, venue or title.
+  const LABELS = /^(data|date|ora|time|heure|zeit|seat|posto|gate|from|to|name|passenger|flight|boarding|class|classe|adult[oe]?|fare|tariff[a]?|price|prix|total|zone|row|section|sec|admit one|admission|general admission|no refunds?|ticket|biglietto|billet|e-?ticket)$/i;
+  const confident = (l: Line) => l.words.every((w) => w.conf >= 75) && /[A-Za-z]{3,}/.test(l.text) && !LABELS.test(l.text.trim());
   const isRoute = (t: string) => [fields.origin, fields.destination].some((r) => r && t.toLowerCase().includes(r.toLowerCase()));
   const byHeight = [...lines].filter((l) => /[A-Za-z]{3}/.test(l.text) && l.text.length <= 40 && !isRoute(l.text) && !/^(from|to|date|time|seat|gate|flight)\b/i.test(l.text) && !/^[A-Za-z]+\s*\/\s*[A-Za-z]+$/.test(l.text.trim())).sort((a, b) => b.height - a.height);
   const venue = lines.find((l) => /\b(arena|theatre|theater|stadium|hall|club|fillmore|museum|museo|gallery|pavilion|center|centre|park|bowl|field|opera)\b/i.test(l.text));
   const brand = lines.find((l) => /\b(air|airlines?|airways|rail|railways?|ferrovia|metro|bahn|transit|bus|lines|express|celere)\b/i.test(l.text) && l.text.length <= 40);
   if (fields.type === "event") {
     if (venue) set("carrier", tidy(venue.text), "text");
-    const act = byHeight.find((l) => l !== venue && !/\b(admit|presents|ticket|no refunds?|general)\b/i.test(l.text));
+    const act = byHeight.find((l) => l !== venue && confident(l) && !/\b(admit|presents|ticket|no refunds?|general)\b/i.test(l.text));
     if (act) set("title", tidy(act.text), "text");
   } else {
     if (brand) set("carrier", tidy(brand.text.replace(/\s*\b(boarding pass|boarding|e-?ticket|ticket|biglietto|billet|fahrkarte)\b.*$/i, "")), "text");
     else {
       // Last resort: the largest confidently-read line of real words.
-      const solid = byHeight.find((l) => l.words.every((w) => w.conf >= 80) && /[A-Za-z]{4,}/.test(l.text) && !/\d{2}/.test(l.text));
+      const solid = byHeight.find((l) => confident(l) && l.words.every((w) => w.conf >= 80) && /[A-Za-z]{4,}/.test(l.text) && !/\d{2}/.test(l.text));
       if (solid && !fallbackCarrier) set("carrier", tidy(solid.text), "text");
     }
     const fl = text.match(/\b([A-Z]{2}|[A-Z]\d|\d[A-Z])\s?0*(\d{2,4})\b(?=.*$)/m);

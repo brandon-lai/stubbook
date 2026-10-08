@@ -1,0 +1,213 @@
+{
+ "tickets": [
+  {
+   "id": "boarding",
+   "src": "/samples/cut/boarding.webp",
+   "aspect": 0.4311,
+   "fields": {
+    "type": "flight",
+    "title": "NW 18",
+    "origin": "SFO",
+    "destination": "NRT",
+    "date": "2026-03-14",
+    "carrier": "Northwind Air",
+    "seat": "32K"
+   },
+   "note": "Window seat. Slept over the whole Pacific."
+  },
+  {
+   "id": "rail",
+   "src": "/samples/cut/rail.webp",
+   "aspect": 0.5356,
+   "fields": {
+    "type": "train",
+    "title": "",
+    "origin": "Milano Centrale",
+    "destination": "Firenze S.M.N.",
+    "date": "2026-06-21",
+    "carrier": "Ferrovia Celere",
+    "seat": "Coach 7, seat 64"
+   },
+   "note": ""
+  },
+  {
+   "id": "hawkwind",
+   "src": "/samples/cut/hawkwind.webp",
+   "aspect": 0.6656,
+   "fields": {
+    "type": "event",
+    "title": "Hawkwind",
+    "origin": "",
+    "destination": "",
+    "date": "1983-02-12",
+    "carrier": "S.U.S.U. Ents",
+    "seat": ""
+   },
+   "note": "Dad's. Found in a record sleeve."
+  },
+  {
+   "id": "wallet",
+   "src": "/samples/cut/wallet.webp",
+   "aspect": 1.7964,
+   "fields": {
+    "type": "flight",
+    "title": "AB 1352",
+    "origin": "LHR",
+    "destination": "LIS",
+    "date": "2026-05-02",
+    "carrier": "Albatross Airways",
+    "seat": "7C"
+   },
+   "note": ""
+  },
+  {
+   "id": "concert",
+   "src": "/samples/cut/concert.webp",
+   "aspect": 0.3711,
+   "fields": {
+    "type": "event",
+    "title": "Halcyon Static",
+    "origin": "",
+    "destination": "",
+    "date": "2026-08-15",
+    "carrier": "The Fillmore, San Francisco",
+    "seat": ""
+   },
+   "note": "Front left, lost my voice."
+  },
+  {
+   "id": "metro",
+   "src": "/samples/cut/metro.webp",
+   "aspect": 0.5578,
+   "fields": {
+    "type": "subway",
+    "title": "Single journey",
+    "origin": "",
+    "destination": "",
+    "date": "2025-11-08",
+    "carrier": "Metro de Vallena",
+    "seat": ""
+   },
+   "note": ""
+  },
+  {
+   "id": "bbd",
+   "src": "/samples/cut/bbd.webp",
+   "aspect": 0.57,
+   "fields": {
+    "type": "event",
+    "title": "Bell Biv DeVoe",
+    "origin": "",
+    "destination": "",
+    "date": "1991-07-30",
+    "carrier": "Deer Creek Music Center",
+    "seat": "Sec C, Row S, Seat 19"
+   },
+   "note": ""
+  },
+  {
+   "id": "museum",
+   "src": "/samples/cut/museum.webp",
+   "aspect": 1.4634,
+   "fields": {
+    "type": "event",
+    "title": "General admission",
+    "origin": "",
+    "destination": "",
+    "date": "2026-01-30",
+    "carrier": "Museo de Arte Moderno",
+    "seat": ""
+   },
+   "note": ""
+  },
+  {
+   "id": "cairo",
+   "src": "/samples/cut/cairo.webp",
+   "aspect": 0.5578,
+   "fields": {
+    "type": "other",
+    "title": "Bus",
+    "origin": "",
+    "destination": "",
+    "date": "2021-12-04",
+    "carrier": "Cairo Transport Authority",
+    "seat": ""
+   },
+   "note": "5 pounds, Tahrir to Zamalek."
+  }
+ ],
+ "placements": [
+  {
+   "ticketId": "boarding",
+   "x": 505.32571592833847,
+   "y": 113.57941996632144,
+   "rotation": 5.2,
+   "scale": 1,
+   "z": 1
+  },
+  {
+   "ticketId": "rail",
+   "x": 186.7069725766778,
+   "y": 113.55525880074129,
+   "rotation": -5.6,
+   "scale": 1,
+   "z": 2
+  },
+  {
+   "ticketId": "hawkwind",
+   "x": 829.8012536116876,
+   "y": 152.6209850674495,
+   "rotation": 1.3,
+   "scale": 1,
+   "z": 3
+  },
+  {
+   "ticketId": "wallet",
+   "x": 476.17956640338525,
+   "y": 369.9319062368013,
+   "rotation": 3,
+   "scale": 0.72,
+   "z": 4
+  },
+  {
+   "ticketId": "concert",
+   "x": 186.22745119966567,
+   "y": 262.9004209707491,
+   "rotation": 1.4,
+   "scale": 1,
+   "z": 5
+  },
+  {
+   "ticketId": "metro",
+   "x": 759.2703557237983,
+   "y": 323.0685713076964,
+   "rotation": -3.2,
+   "scale": 1,
+   "z": 6
+  },
+  {
+   "ticketId": "bbd",
+   "x": 178.85505406511948,
+   "y": 406.82746700849384,
+   "rotation": -0.4,
+   "scale": 1,
+   "z": 7
+  },
+  {
+   "ticketId": "museum",
+   "x": 721.4905430199578,
+   "y": 582.3976134173572,
+   "rotation": 5.5,
+   "scale": 0.72,
+   "z": 8
+  },
+  {
+   "ticketId": "cairo",
+   "x": 183.78624565526843,
+   "y": 583.2949741366319,
+   "rotation": 2.1,
+   "scale": 1,
+   "z": 9
+  }
+ ]
+}

@@ -10,7 +10,7 @@
 import { decodeBarcodes, findBarcodeRegions } from "./barcode";
 import { renderBlurred } from "./blur";
 import { cutDigital, cutPaper, warp } from "./cutout";
-import { loadCv, withMats } from "./cv";
+import { loadCv, withMats, type CV } from "./cv";
 import { detectQuad } from "./detect";
 import type { Quad } from "./geometry";
 import { readText, warmOcr } from "./ocr";
@@ -65,10 +65,13 @@ export async function locate(source: HTMLCanvasElement, mode: SourceMode): Promi
     // A photo from the library: if a ticket is found inside it, treat it like a
     // camera scan. If the image already is the ticket (a tight crop or a scan),
     // keep it whole as a flat card.
+    // What lies outside the outline decides it: a table or desk is plain (edge
+    // density 0.000-0.014 on the real photos), while a tight crop's "outside" is
+    // more ticket print (0.028-0.112). Measured on fixtures/real.
     if (det) {
       const xs = det.corners.map((p) => p[0]), ys = det.corners.map((p) => p[1]);
       const frac = ((Math.max(...xs) - Math.min(...xs)) * (Math.max(...ys) - Math.min(...ys))) / (W * H);
-      if (frac < 0.88) return { ...det, detected: true, kind: "paper" as Kind };
+      if (frac < 0.88 && outsideEdgeDensity(cv, src, det.corners) < 0.02) return { ...det, detected: true, kind: "paper" as Kind };
     }
     return { corners: fullQuad(W, H), detected: false, kind: "digital" as Kind, method: "whole", score: 0 };
   }));
@@ -197,6 +200,31 @@ function overlap(a: { x: number; y: number; w: number; h: number }, b: { x: numb
   return (ix * iy) / Math.min(a.w * a.h, b.w * b.h || 1);
 }
 const contains = (a: { x: number; y: number; w: number; h: number }, b: { x: number; y: number; w: number; h: number }) => overlap(a, b) > 0.8;
+
+/** Share of edge pixels outside the quad (a band around the outline excluded). */
+function outsideEdgeDensity(cv: CV, src: CV, q: Quad) {
+  return withMats((keep) => {
+    const k = 640 / Math.max(src.cols, src.rows);
+    const small = keep(new cv.Mat());
+    cv.resize(src, small, new cv.Size(Math.round(src.cols * k), Math.round(src.rows * k)), 0, 0, cv.INTER_AREA);
+    const g = keep(new cv.Mat());
+    cv.cvtColor(small, g, cv.COLOR_RGBA2GRAY);
+    cv.GaussianBlur(g, g, new cv.Size(5, 5), 0);
+    const e = keep(new cv.Mat());
+    cv.Canny(g, e, 50, 150);
+    const mask = keep(new cv.Mat(g.rows, g.cols, cv.CV_8UC1, new cv.Scalar(0)));
+    const pts = keep(cv.matFromArray(4, 1, cv.CV_32SC2, q.flatMap(([x, y]) => [Math.round(x * k), Math.round(y * k)])));
+    const vec = keep(new cv.MatVector());
+    vec.push_back(pts);
+    cv.fillPoly(mask, vec, new cv.Scalar(255));
+    const k9 = keep(cv.getStructuringElement(cv.MORPH_RECT, new cv.Size(9, 9)));
+    cv.dilate(mask, mask, k9);
+    const ed = e.data as Uint8Array, md = mask.data as Uint8Array;
+    let n = 0, hits = 0;
+    for (let i = 0; i < md.length; i++) if (!md[i]) { n++; if (ed[i]) hits++; }
+    return n ? hits / n : 0;
+  });
+}
 
 function insetQuad(W: number, H: number, f: number): Quad {
   return [[W * f, H * f], [W * (1 - f), H * f], [W * (1 - f), H * (1 - f)], [W * f, H * (1 - f)]];

@@ -1,5 +1,10 @@
 import type { Metadata, Viewport } from "next";
+import { Fraunces, IBM_Plex_Mono } from "next/font/google";
+import RegisterSW from "@/components/RegisterSW";
 import "./globals.css";
+
+const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-fraunces", display: "swap" });
+const plexMono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-plex-mono", display: "swap" });
 
 export const metadata: Metadata = {
   title: { default: "Stubbook", template: "%s · Stubbook" },
@@ -12,8 +17,8 @@ export const viewport: Viewport = { width: "device-width", initialScale: 1, view
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
+    <html lang="en" className={`${fraunces.variable} ${plexMono.variable}`}>
+      <body>{children}<RegisterSW /></body>
     </html>
   );
 }

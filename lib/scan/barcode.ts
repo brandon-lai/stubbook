@@ -72,7 +72,7 @@ export function findBarcodeRegions(cv: CV, src: CV): Box[] {
         const along = vertical ? r.h : r.w, across = vertical ? r.w : r.h;
         // A barcode is a solid block: long enough, not a thin text line.
         if (r.w * r.h < W * H * 0.006 || along < W * 0.08 * (vertical ? H / W : 1) || across < 14) continue;
-        if (!stripy(gray, r, vertical)) continue;
+        if (!stripy(gray, r, vertical) || !coherent(gray, r, vertical)) continue;
         out.push(r);
       }
     }
@@ -130,6 +130,27 @@ function stripy(gray: CV, r: Box, vertical: boolean) {
     runs += flips / vals.length; samples++;
   }
   return samples > 0 && runs / samples > 0.12;
+}
+
+/**
+ * Bars run unbroken across the code: brightness barely changes along a bar and
+ * changes sharply across bars. Bold text also alternates dark and light along a
+ * line, but its letters change constantly in the other direction too, which is
+ * what this rejects ("Milano", "DEVOE" and a ticket header were all being taken
+ * for barcodes before this check).
+ */
+function coherent(gray: CV, r: Box, vertical: boolean) {
+  const d = gray.data as Uint8Array, W = gray.cols;
+  // Core of the region: skip the ends of the bars, where the quiet zone and text sit.
+  const x0 = Math.round(r.x + r.w * (vertical ? 0.15 : 0.02)), x1 = Math.round(r.x + r.w * (vertical ? 0.85 : 0.98));
+  const y0 = Math.round(r.y + r.h * (vertical ? 0.02 : 0.15)), y1 = Math.round(r.y + r.h * (vertical ? 0.98 : 0.85));
+  let across = 0, along = 0;
+  for (let y = y0; y < y1 - 1; y++) for (let x = x0; x < x1 - 1; x++) {
+    const v = d[y * W + x];
+    const dx = Math.abs(d[y * W + x + 1] - v), dy = Math.abs(d[(y + 1) * W + x] - v);
+    if (vertical) { across += dy; along += dx; } else { across += dx; along += dy; }
+  }
+  return across > 0 && along / across < 0.35;
 }
 
 /** QR-like: high contrast, roughly half dark, transitions in both directions. */
