@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "packageManager": "pnpm@9.15.2",
-  "engines": { "node": ">=22.9" },
+  "engines": {
+    "node": ">=22.9"
+  },
   "scripts": {
     "dev": "next dev -p 3340",
     "build": "next build",
@@ -38,5 +40,12 @@
     "typescript": "5.9.3",
     "vitest": "5.0.3"
   },
-  "pnpm": { "onlyBuiltDependencies": ["sharp"] }
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "sharp"
+    ]
+  },
+  "optionalDependencies": {
+    "@rolldown/binding-darwin-arm64": "1.2.13"
+  }
 }

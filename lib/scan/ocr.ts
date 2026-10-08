@@ -36,20 +36,55 @@ export async function readText(canvas: HTMLCanvasElement): Promise<{ words: OcrW
   g.fillStyle = "#fff";
   g.fillRect(0, 0, c.width, c.height);
   g.drawImage(canvas, 0, 0, c.width, c.height);
-  const { data } = await w.recognize(c, {}, { blocks: true });
+  normalise(g, c.width, c.height);
   const words: OcrWord[] = [];
   let line = 0;
-  for (const b of data.blocks ?? []) for (const p of b.paragraphs) for (const l of p.lines) {
-    line++;
-    for (const wd of l.words) {
-      if (!wd.text.trim() || wd.confidence < 20) continue;
-      words.push({
-        text: wd.text,
-        conf: wd.confidence,
-        line,
-        box: { x: wd.bbox.x0 / k, y: wd.bbox.y0 / k, w: (wd.bbox.x1 - wd.bbox.x0) / k, h: (wd.bbox.y1 - wd.bbox.y0) / k },
-      });
+  const collect = (data: import("tesseract.js").Page, minConf: number, skipOverlaps: boolean) => {
+    for (const b of data.blocks ?? []) for (const p of b.paragraphs) for (const l of p.lines) {
+      line++;
+      for (const wd of l.words) {
+        if (!wd.text.trim() || wd.confidence < minConf) continue;
+        const box = { x: wd.bbox.x0 / k, y: wd.bbox.y0 / k, w: (wd.bbox.x1 - wd.bbox.x0) / k, h: (wd.bbox.y1 - wd.bbox.y0) / k };
+        if (skipOverlaps && words.some((o) => overlaps(o.box, box))) continue;
+        words.push({ text: wd.text, conf: wd.confidence, line, box });
+      }
     }
+  };
+  const first = (await w.recognize(c, {}, { blocks: true })).data;
+  collect(first, 20, false);
+  return { words, confidence: first.confidence };
+}
+
+function overlaps(a: { x: number; y: number; w: number; h: number }, b: { x: number; y: number; w: number; h: number }) {
+  const ix = Math.max(0, Math.min(a.x + a.w, b.x + b.w) - Math.max(a.x, b.x));
+  const iy = Math.max(0, Math.min(a.y + a.h, b.y + b.h) - Math.max(a.y, b.y));
+  return ix * iy > 0.3 * Math.min(a.w * a.h, b.w * b.h);
+}
+
+/**
+ * Grayscale and stretch contrast between the 2nd and 98th percentile. A ticket
+ * shot in a dim room comes out as dark grey on darker grey, which tesseract's
+ * own thresholding reads as nothing at all.
+ */
+function normalise(g: CanvasRenderingContext2D, W: number, H: number) {
+  const im = g.getImageData(0, 0, W, H);
+  const d = im.data;
+  const hist = new Uint32Array(256);
+  const lum = new Uint8Array(W * H);
+  for (let i = 0, j = 0; i < d.length; i += 4, j++) {
+    const v = (d[i] * 299 + d[i + 1] * 587 + d[i + 2] * 114) / 1000;
+    lum[j] = v;
+    hist[lum[j]]++;
   }
-  return { words, confidence: data.confidence };
+  const n = W * H;
+  let lo = 0, hi = 255, acc = 0;
+  for (let v = 0; v < 256; v++) { acc += hist[v]; if (acc > n * 0.02) { lo = v; break; } }
+  acc = 0;
+  for (let v = 255; v >= 0; v--) { acc += hist[v]; if (acc > n * 0.02) { hi = v; break; } }
+  const span = Math.max(24, hi - lo);
+  for (let i = 0, j = 0; i < d.length; i += 4, j++) {
+    const v = Math.max(0, Math.min(255, ((lum[j] - lo) * 255) / span));
+    d[i] = d[i + 1] = d[i + 2] = v;
+  }
+  g.putImageData(im, 0, 0);
 }

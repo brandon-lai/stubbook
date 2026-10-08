@@ -41,6 +41,10 @@ importers:
       zxing-wasm:
         specifier: 3.1.5
         version: 3.1.5(@types/emscripten@1.41.6)
+    optionalDependencies:
+      '@rolldown/binding-darwin-arm64':
+        specifier: 1.2.13
+        version: 1.2.13
     devDependencies:
       '@types/node':
         specifier: 22.19.1

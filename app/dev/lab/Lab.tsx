@@ -10,7 +10,7 @@ import { detectQuad, type Detection } from "@/lib/scan/detect";
 
 declare global {
   interface Window {
-    __lab?: { run: (url: string, mode: SourceMode) => Promise<unknown>; detect: (url: string) => Promise<Detection[]>; ready: boolean };
+    __lab?: { run: (url: string, mode: SourceMode) => Promise<unknown>; detect: (url: string) => Promise<Detection[]>; ocr: (url: string) => Promise<unknown>; ready: boolean };
   }
 }
 
@@ -20,6 +20,12 @@ export default function Lab() {
     warmUp();
     window.__lab = {
       ready: true,
+      async ocr(url) {
+        const r = await readText(await loadImage(url));
+        const lines: Record<number, string> = {};
+        for (const w of r.words) lines[w.line] = ((lines[w.line] ?? "") + " " + w.text + "(" + Math.round(w.conf) + ")").trim();
+        return Object.values(lines);
+      },
       async detect(url) {
         const cv = await loadCv();
         const src = cv.imread(await loadImage(url));

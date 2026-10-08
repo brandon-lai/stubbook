@@ -34,6 +34,7 @@ const TYPE_WORDS: [TicketType, RegExp][] = [
 
 export function parseTicket(words: OcrWord[], barcodes: DecodedBarcode[], now = new Date()): ParseResult {
   const fields = emptyFields();
+  let fallbackCarrier = "";
   const sources: ParseResult["sources"] = {};
   const set = (k: keyof Fields, v: string, src: FieldSource) => {
     if (!v || (fields[k] && sources[k] === "barcode")) return;
@@ -51,7 +52,10 @@ export function parseTicket(words: OcrWord[], barcodes: DecodedBarcode[], now = 
     set("origin", leg.from, "barcode");
     set("destination", p.legs.at(-1)!.to, "barcode");
     set("date", julianToIso(leg.julianDay, now), "barcode");
-    set("carrier", AIRLINES[leg.carrier] ?? leg.carrier, "barcode");
+    // A code we know becomes a name; an unknown one waits for the printed name
+    // (step 6) and is only used if none is found.
+    if (AIRLINES[leg.carrier]) set("carrier", AIRLINES[leg.carrier], "barcode");
+    else fallbackCarrier = leg.carrier;
     set("title", `${leg.carrier} ${leg.flight}`, "barcode");
     set("seat", leg.seat, "barcode");
     break;
@@ -86,7 +90,8 @@ export function parseTicket(words: OcrWord[], barcodes: DecodedBarcode[], now = 
 
   // 6. Carrier or venue, and a title: the line printed largest is usually the
   //    brand (travel) or the act (events).
-  const byHeight = [...lines].filter((l) => /[A-Za-z]{3}/.test(l.text) && l.text.length <= 40).sort((a, b) => b.height - a.height);
+  const isRoute = (t: string) => [fields.origin, fields.destination].some((r) => r && t.toLowerCase().includes(r.toLowerCase()));
+  const byHeight = [...lines].filter((l) => /[A-Za-z]{3}/.test(l.text) && l.text.length <= 40 && !isRoute(l.text) && !/^(from|to|date|time|seat|gate|flight)\b/i.test(l.text) && !/^[A-Za-z]+\s*\/\s*[A-Za-z]+$/.test(l.text.trim())).sort((a, b) => b.height - a.height);
   const venue = lines.find((l) => /\b(arena|theatre|theater|stadium|hall|club|fillmore|museum|museo|gallery|pavilion|center|centre|park|bowl|field|opera)\b/i.test(l.text));
   const brand = lines.find((l) => /\b(air|airlines?|airways|rail|railways?|ferrovia|metro|bahn|transit|bus|lines|express|celere)\b/i.test(l.text) && l.text.length <= 40);
   if (fields.type === "event") {
@@ -94,12 +99,17 @@ export function parseTicket(words: OcrWord[], barcodes: DecodedBarcode[], now = 
     const act = byHeight.find((l) => l !== venue && !/\b(admit|presents|ticket|no refunds?|general)\b/i.test(l.text));
     if (act) set("title", tidy(act.text), "text");
   } else {
-    if (brand) set("carrier", tidy(brand.text), "text");
-    else if (byHeight[0]) set("carrier", tidy(byHeight[0].text), "text");
+    if (brand) set("carrier", tidy(brand.text.replace(/\s*\b(boarding pass|boarding|e-?ticket|ticket|biglietto|billet|fahrkarte)\b.*$/i, "")), "text");
+    else {
+      // Last resort: the largest confidently-read line of real words.
+      const solid = byHeight.find((l) => l.words.every((w) => w.conf >= 80) && /[A-Za-z]{4,}/.test(l.text) && !/\d{2}/.test(l.text));
+      if (solid && !fallbackCarrier) set("carrier", tidy(solid.text), "text");
+    }
     const fl = text.match(/\b([A-Z]{2}|[A-Z]\d|\d[A-Z])\s?0*(\d{2,4})\b(?=.*$)/m);
     if (fields.type === "flight" && fl && !fields.title) set("title", `${fl[1]} ${fl[2]}`, "text");
   }
 
+  if (!fields.carrier && fallbackCarrier) set("carrier", fallbackCarrier, "barcode");
   return { fields, sources, confidence: confidenceOf(fields, sources) };
 }
 
@@ -179,7 +189,8 @@ export function findRoute(lines: string[]): [string, string] | null {
     const m = l.trim().match(/^([A-Za-z]+)(?:\s*\/\s*([A-Za-z]+))?\s*[:.]?\s*(.*)$/);
     if (!m) return;
     const labels = [m[1], m[2]].filter(Boolean) as string[];
-    const value = (m[3] || "").trim() || (lines[i + 1] ?? "").trim();
+    const placeLike = (t: string) => /[A-Za-z]{3}/.test(t) && (t.match(/[A-Za-z]/g)?.length ?? 0) >= t.replace(/\s/g, "").length * 0.6;
+    const value = (m[3] || "").trim() || lines.slice(i + 1, i + 4).map((t) => t.trim()).find(placeLike) || "";
     if (!from && labels.some((x) => FROM.test(x))) from = value;
     else if (!to && labels.some((x) => TO.test(x))) to = value;
   });
@@ -193,6 +204,9 @@ export function findRoute(lines: string[]): [string, string] | null {
 export function findSeat(text: string): string {
   const sec = text.match(/\bsec(?:tion)?\.?\s*([A-Z0-9]{1,4})\b.*?\brow\s*([A-Z0-9]{1,3})\b.*?\bseat\s*([A-Z0-9]{1,4})\b/is);
   if (sec) return `Sec ${sec[1]}, Row ${sec[2]}, Seat ${sec[3]}`;
+  // Column layout: a "Coach / Seat" header with "7 / 64" printed below it.
+  const col = /\b(carrozza|coach|wagen|voiture|car)\b\s*\/\s*(posto|seat|platz|place)\b/i.test(text) && text.match(/(?:^|\n)\s*(\d{1,2})\s*\/\s*(\d{1,3}[A-Z]?)\s*(?:\n|$)/);
+  if (col) return `Coach ${col[1]}, seat ${col[2]}`;
   const coach = text.match(/\b(?:coach|carrozza|wagen|voiture|car)\b[^\n\d]{0,24}(\d{1,2})\s*[/,]?\s*(?:seat|posto|platz|place)?\s*[:.]?\s*(\d{1,3}[A-Z]?)\b/i);
   if (coach) return `Coach ${coach[1]}, seat ${coach[2]}`;
   const seat = text.match(/\bseat\b[^\n\dA-Z]{0,6}(\d{1,3}[A-K])\b/i) || text.match(/\bseat\b\s*\n?\s*(\d{1,3}[A-K])\b/i);

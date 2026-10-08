@@ -149,7 +149,7 @@ const tickets = [];
 
 // 5. Concert stub: thermal Ticketmaster-style with stub section, Code128 + ticket number.
 {
-  const f = { type: "event", origin: "", destination: "", date: "2026-08-15", carrier: "The Fillmore, San Francisco", seat: "Sec GA, Row -, Seat -", title: "Halcyon Static" };
+  const f = { type: "event", origin: "", destination: "", date: "2026-08-15", carrier: "The Fillmore, San Francisco", seat: "", title: "Halcyon Static" };
   tickets.push({
     id: "concert-stub", kind: "paper", w: 1500, h: 560, fields: f, barcode: { format: "Code128", text: "7731 0094 2288 15" },
     sensitive: ["7731 0094 2288 15", "TM4QZ8"],

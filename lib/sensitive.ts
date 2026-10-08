@@ -36,7 +36,8 @@ export function findSensitive(words: OcrWord[]): BlurBox[] {
       // Runs of digit groups ("0473 9921 55", "8800 4412 9931") read as one number.
       if (/^\d+$/.test(tok)) {
         let j = i, digits = "";
-        while (j < ws.length && /^\d+[.,]?$/.test(ws[j].text.replace(/[^\d.,]/g, "") || "x") && /^\d/.test(ws[j].text.replace(/^[^\d]+/, "")) && !TIMEY.test(ws[j].text) && !MONEY.test(ws[j].text)) {
+        const digitsOnly = (t: string) => /^\d+[.,]?$/.test(t.replace(/^[^A-Za-z0-9]+|[^A-Za-z0-9.,]+$/g, ""));
+        while (j < ws.length && digitsOnly(ws[j].text) && !TIMEY.test(ws[j].text) && !MONEY.test(ws[j].text)) {
           digits += ws[j].text.replace(/\D/g, "");
           j++;
           if (digits.length >= 20) break;
