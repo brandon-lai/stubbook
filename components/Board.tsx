@@ -39,6 +39,8 @@ interface Props {
   empty?: React.ReactNode;
   /** Thumbnails: no interaction, no back faces. */
   static?: boolean;
+  /** View-only boards: zoom so the tickets fill the width (up to 2.2x), height follows the content. */
+  fitContent?: boolean;
   /** Smallest board scale (px per board unit). Below it the board scrolls sideways instead of shrinking. */
   minScale?: number;
 }
@@ -80,6 +82,16 @@ export default function Board(props: Props) {
   let k = props.minScale ? Math.max(fit, props.minScale) : fit;
   // Thumbnails zoom to their tickets, so a collage of two does not look empty.
   let ox = 0, oy = 0;
+  let fittedHeight = 0;
+  if (props.fitContent && !editable && placements.length && width) {
+    const bs = placements.map((p) => bounds(p, tickets.find((t) => t.id === p.ticketId)?.aspect ?? 0.4));
+    const x0 = Math.min(...bs.map((b) => b.x0)) - 30, x1 = Math.max(...bs.map((b) => b.x1)) + 30;
+    const y0 = Math.min(...bs.map((b) => b.y0)) - 30, y1 = Math.max(...bs.map((b) => b.y1)) + 30;
+    k = Math.min(width / (x1 - x0), fit * 2.2);
+    ox = (width - (x1 - x0) * k) / 2 - x0 * k;
+    oy = -y0 * k;
+    fittedHeight = Math.max((y1 - y0) * k, 160);
+  }
   if (props.static && placements.length && width && boxH) {
     const bs = placements.map((p) => bounds(p, tickets.find((t) => t.id === p.ticketId)?.aspect ?? 0.4));
     const x0 = Math.min(...bs.map((b) => b.x0)) - 30, x1 = Math.max(...bs.map((b) => b.x1)) + 30;
@@ -228,7 +240,7 @@ export default function Board(props: Props) {
     <div
       ref={props.minScale ? inner : ref}
       className={`board${editable ? " editing" : ""}${props.animate ? " animate" : ""}`}
-      style={{ height: props.static ? "100%" : height || undefined, minHeight: props.static ? undefined : 200, width: props.minScale ? BOARD_W * k : undefined, touchAction: editable && selectedId ? "none" : undefined }}
+      style={{ height: props.static ? "100%" : fittedHeight || height || undefined, minHeight: props.static ? undefined : 200, width: props.minScale ? BOARD_W * k : undefined, touchAction: editable && selectedId ? "none" : undefined }}
       onPointerDown={onBoardDown}
       onPointerMove={onMove}
       onPointerUp={onUp}

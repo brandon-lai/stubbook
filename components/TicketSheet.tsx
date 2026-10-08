@@ -31,6 +31,7 @@ export default function TicketSheet({ ticketId, collage, collages, onClose, onSa
     collagesForTicket(ticketId).then(setOn);
   }, [ticketId]);
 
+  useEffect(() => { const k = (e: KeyboardEvent) => e.key === "Escape" && onClose(); addEventListener("keydown", k); return () => removeEventListener("keydown", k); }, [onClose]);
   if (!t) return null;
   const save = async (next: Ticket) => { setT(next); await putTicket(next); onSaved(next); };
 

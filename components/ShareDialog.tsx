@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { publish, shareUrl, unpublish, ShareError } from "@/lib/share-client";
 import type { Collage } from "@/lib/store";
 
@@ -15,6 +15,7 @@ export default function ShareDialog({ collage, recentTrip, onClose, onChange }: 
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  useEffect(() => { const k = (e: KeyboardEvent) => e.key === "Escape" && onClose(); addEventListener("keydown", k); return () => removeEventListener("keydown", k); }, [onClose]);
   const shared = collage.visibility === "link" && collage.shareToken;
 
   async function share() {
@@ -44,11 +45,11 @@ export default function ShareDialog({ collage, recentTrip, onClose, onChange }: 
         <header><h2 id="share-title" style={{ flex: 1 }}>Who sees this collage</h2><button className="btn icon ghost" onClick={onClose} aria-label="Close">✕</button></header>
         <div className="stack">
           <label className="switch" style={{ alignItems: "center" }}>
-            <input type="radio" name="vis" checked={!shared} onChange={() => shared && stop()} disabled={!!busy} style={{ appearance: "auto", width: 20, height: 20 }} />
+            <input type="radio" name="vis" checked={!shared} onChange={() => shared && stop()} disabled={!!busy} />
             <span><b>Private</b> <span className="muted small">· only on this device</span></span>
           </label>
           <label className="switch" style={{ alignItems: "center" }}>
-            <input type="radio" name="vis" checked={!!shared} onChange={() => !shared && share()} disabled={!!busy} style={{ appearance: "auto", width: 20, height: 20 }} />
+            <input type="radio" name="vis" checked={!!shared} onChange={() => !shared && share()} disabled={!!busy} />
             <span><b>Anyone with the link</b> <span className="muted small">· read-only</span></span>
           </label>
           <p className="small muted">

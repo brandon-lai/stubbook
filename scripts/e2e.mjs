@@ -82,7 +82,7 @@ async function phase1() {
   await browser.close();
 }
 
-async function phase2() {
+async function phase2(warm) {
   const y4m = path.resolve(SHOTS, "../camera.y4m");
   if (!existsSync(y4m)) {
     // A ticket on a table, held a little unsteadily: 4 s at 10 fps.
@@ -93,9 +93,16 @@ async function phase2() {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true, permissions: ["camera"] });
   const page = await ctx.newPage();
   page.on("pageerror", (e) => console.log("  [pageerror]", e.message));
-  await page.goto(BASE + "/scan");
+  if (warm) {
+    // The usual path: land on the home page, look around, tap Scan.
+    await page.goto(BASE + "/");
+    await page.waitForTimeout(6000);
+    await page.getByTestId("start").click();
+  } else {
+    await page.goto(BASE + "/scan"); // worst case: a cold link straight to the scanner
+  }
   await page.waitForTimeout(1500);
-  await shot(page, "8-camera");
+  await shot(page, `8-camera-${warm ? "warm" : "cold"}`);
   await page.getByTestId("save").waitFor({ timeout: 30000 });
   await page.getByText(/areas? blurred/).waitFor({ timeout: 60000 });
   await shot(page, "9-camera-confirm");
@@ -108,12 +115,67 @@ async function phase2() {
   console.log("  timing marks (ms since page load):", JSON.stringify(t));
   if (t?.landed) {
     const total = (t.landed - t.opened) / 1000;
-    console.log(`  camera opened -> ticket on collage: ${total.toFixed(1)} s (auto-capture ${((t.captured - t.opened) / 1000).toFixed(1)} s, read ${((t.read - t.captured) / 1000).toFixed(1)} s, includes the scripted tap on Save)`);
+    console.log(`  [${warm ? "via home" : "cold link"}] camera opened -> ticket on collage: ${total.toFixed(1)} s (auto-capture ${((t.captured - t.opened) / 1000).toFixed(1)} s, read ${((t.read - t.captured) / 1000).toFixed(1)} s, includes the scripted tap on Save)`);
     ok(total < 15, "capture to collage under 15 s");
   } else ok(false, "landing time recorded");
   await shot(page, "10-camera-landed");
   await browser.close();
 }
 
+async function phase3() {
+  // Sharing through the UI. Only runs when the deployment has a database.
+  const probe = await fetch(BASE + "/api/shares", { method: "POST", headers: { "x-owner-secret": "x".repeat(24), "content-type": "application/json" }, body: "{}" });
+  if (probe.status === 503) { console.log("  (no database here: sharing phase skipped)"); return; }
+  const browser = await chromium.launch();
+  const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  const page = await ctx.newPage();
+  page.on("pageerror", (e) => console.log("  [pageerror]", e.message));
+  await page.goto(BASE + "/scan");
+  await page.getByText("Try a sample ticket").click({ timeout: 20000 });
+  await page.getByText(/areas? blurred/).waitFor({ timeout: 60000 });
+  await page.getByTestId("save").click();
+  await page.waitForURL(/\/c\//);
+  await page.locator(".tk").first().waitFor();
+  await page.getByRole("button", { name: "Share" }).click();
+  await page.getByText("Anyone with the link").click();
+  const link = page.locator('input[aria-label="Share link"]');
+  await link.waitFor({ timeout: 30000 });
+  const url = await link.inputValue();
+  ok(/\/s\/[0-9A-Za-z]{22}$/.test(url), `share link created (${url.replace(BASE, "")})`);
+  await shot(page, "11-share-dialog");
+  await page.keyboard.press("Escape");
+  ok(!(await page.locator(".sheet-backdrop").count()), "Escape closes the share dialog");
+
+  const viewer = await (await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true })).newPage();
+  await viewer.goto(url);
+  await viewer.locator(".tk img").first().waitFor();
+  await viewer.waitForTimeout(800);
+  const srcs = await viewer.$$eval(".tk img", (els) => els.map((e) => e.getAttribute("src")));
+  ok(srcs.length === 1 && srcs.every((s) => /\/api\/shares\/.+\/assets\/[0-9a-f]{64}$/.test(s)), "shared view shows the uploaded (blurred) image");
+  await shot(viewer, "12-shared-view");
+  const posBefore = await viewer.locator(".tk").first().evaluate((el) => el.style.transform);
+
+  // Turn the ticket as the owner, with the keyboard; the link republishes itself.
+  // (Rotation, not position: a lone ticket is recentred by the view's zoom-to-fit.)
+  const t = page.locator(".tk").first();
+  await t.focus();
+  for (let i = 0; i < 4; i++) await page.keyboard.press("]");
+  await page.getByText("Updating link…").waitFor({ timeout: 5000 }).catch(() => {});
+  await page.getByText("Shared by link").waitFor({ timeout: 20000 });
+  await viewer.reload();
+  await viewer.locator(".tk").first().waitFor();
+  const posAfter = await viewer.locator(".tk").first().evaluate((el) => el.style.transform);
+  ok(posBefore !== posAfter, "shared view follows the owner's edits");
+
+  await page.getByRole("button", { name: "Share" }).click();
+  await page.getByRole("button", { name: "Stop sharing" }).click();
+  await page.locator('input[aria-label="Share link"]').waitFor({ state: "detached", timeout: 20000 });
+  const gone = await fetch(url);
+  ok(gone.status === 404, "stop sharing removes the link");
+  await browser.close();
+}
+
 await phase1();
-await phase2();
+await phase2(false);
+await phase2(true);
+await phase3();

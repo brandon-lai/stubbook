@@ -16,7 +16,10 @@
     "db:migrate": "node scripts/migrate.mjs",
     "test": "vitest run",
     "fixtures": "node scripts/fixtures/build.mjs",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:integration": "vitest run -c vitest.integration.config.ts",
+    "lab": "node scripts/lab.mjs",
+    "e2e": "node scripts/e2e.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "0.132.0",

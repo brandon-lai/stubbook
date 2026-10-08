@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Board, { type BoardTicket } from "./Board";
 import { createCollage, getTicket, imageUrl, listCollages, ownerView, placementsFor, type Collage } from "@/lib/store";
 import type { Placement } from "@/lib/layout";
+import { prefetchRuntimes } from "@/lib/scan/prefetch";
 
 interface Thumb { c: Collage; tickets: BoardTicket[]; placements: Placement[] }
 
@@ -15,6 +16,7 @@ export default function Home({ intro }: { intro: React.ReactNode }) {
   const [thumbs, setThumbs] = useState<Thumb[] | null>(null);
 
   useEffect(() => {
+    prefetchRuntimes();
     (async () => {
       const cs = await listCollages().catch(() => [] as Collage[]);
       setThumbs(await Promise.all(cs.map(async (c) => {

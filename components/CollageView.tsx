@@ -9,6 +9,7 @@ import ShareDialog from "./ShareDialog";
 import TicketSheet from "./TicketSheet";
 import { arrange, type ArrangeMode, type Placement } from "@/lib/layout";
 import { publish } from "@/lib/share-client";
+import { prefetchRuntimes } from "@/lib/scan/prefetch";
 import {
   deleteCollage, getCollage, getTicket, imageUrl, listCollages, ownerView, placementsFor, putCollage, putPlacements, removeFromCollage,
   type Collage, type Ticket,
@@ -50,7 +51,7 @@ export default function CollageView({ id }: { id: string }) {
     setPlacements(ps.map(({ ticketId, x, y, rotation, scale, z }) => ({ ticketId, x, y, rotation, scale, z })));
   }, [id, toBoard]);
 
-  useEffect(() => { void load(); }, [load]);
+  useEffect(() => { void load(); prefetchRuntimes(); }, [load]);
 
   // The landing animation runs once; drop the query param so a reload does not replay it.
   // Capture-to-collage timing (the PRD's 15-second goal): mark when the new ticket is on screen.

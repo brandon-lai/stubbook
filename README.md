@@ -46,6 +46,8 @@ The PRD says the riskiest question is whether a phone scan of a crumpled ticket 
 
 **Measured from opening the camera to the ticket on the collage: 3.4 s**, including the scripted tap on Save. The PRD's goal is under 15 s.
 
+`pnpm test:integration` runs 15 sharing tests against a live server and Postgres: owner-only update, revoke and upload; hash must match the bytes and the manifest; non-images and images over 3 MB refused; EXIF GPS stripped by re-encoding; revoking deletes the page and every image; noindex; rate limit per client stored as an HMAC; no column for a raw IP or an original image; RLS on every table. `scripts/e2e.mjs` also shares through the UI: create the link, open it in another browser, edit, watch the link follow, stop sharing, get a 404.
+
 `pnpm test` runs 29 unit tests: the BCBP decoder, dates in nine formats, routes, seats, the sensitive-data rules (including what must *not* be blurred), auto-place (40 tickets, no ticket more than 12% covered), and arrange.
 
 ### What verification found
