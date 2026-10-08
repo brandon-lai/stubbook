@@ -1,0 +1,13 @@
+node_modules
+.next
+.env
+.env.*
+!.env.example
+.venv
+.vercel
+next-env.d.ts
+*.tsbuildinfo
+public/vendor/*
+!public/vendor/tessdata
+fixtures/out
+test-results

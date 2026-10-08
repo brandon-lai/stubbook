@@ -1,0 +1,150 @@
+{
+  "boarding-thermal": {
+    "kind": "paper",
+    "w": 1600,
+    "h": 650,
+    "fields": {
+      "type": "flight",
+      "origin": "SFO",
+      "destination": "NRT",
+      "date": "2026-03-14",
+      "carrier": "Northwind Air",
+      "seat": "32K",
+      "flight": "NW 0018"
+    },
+    "barcode": {
+      "format": "PDF417",
+      "text": "M1LINDQVIST/THEO      EQX7K2P SFONRTNW 0018 073Y032K0145 100"
+    },
+    "sensitive": [
+      "QX7K2P",
+      "0372418829310",
+      "NW 88412093"
+    ]
+  },
+  "boarding-wallet": {
+    "kind": "digital",
+    "w": 1179,
+    "h": 2556,
+    "fields": {
+      "type": "flight",
+      "origin": "LHR",
+      "destination": "LIS",
+      "date": "2026-05-02",
+      "carrier": "Albatross Airways",
+      "seat": "7C",
+      "flight": "AB 1352"
+    },
+    "barcode": {
+      "format": "Aztec",
+      "text": "M1OKAFOR/MARGARET     EL9RTWE LHRLISAB 1352 122Y007C0022 100"
+    },
+    "sensitive": [
+      "L9RTWE",
+      "1256634009184"
+    ]
+  },
+  "rail-card": {
+    "kind": "paper",
+    "w": 1500,
+    "h": 760,
+    "fields": {
+      "type": "train",
+      "origin": "Milano Centrale",
+      "destination": "Firenze S.M.N.",
+      "date": "2026-06-21",
+      "carrier": "Ferrovia Celere",
+      "seat": "Coach 7, seat 64"
+    },
+    "barcode": {
+      "format": "Aztec",
+      "text": "FC|PNR:H7TMQA|TKT:8800 4412 9931|MI-CENTRALE|FI-SMN|20260621|0915|C07P64"
+    },
+    "sensitive": [
+      "H7TMQA",
+      "8800 4412 9931"
+    ]
+  },
+  "metro-single": {
+    "kind": "paper",
+    "w": 1020,
+    "h": 540,
+    "fields": {
+      "type": "subway",
+      "origin": "",
+      "destination": "",
+      "date": "2025-11-08",
+      "carrier": "Metro de Vallena",
+      "seat": ""
+    },
+    "barcode": null,
+    "sensitive": [
+      "0473 9921 55"
+    ]
+  },
+  "concert-stub": {
+    "kind": "paper",
+    "w": 1500,
+    "h": 560,
+    "fields": {
+      "type": "event",
+      "origin": "",
+      "destination": "",
+      "date": "2026-08-15",
+      "carrier": "The Fillmore, San Francisco",
+      "seat": "Sec GA, Row -, Seat -",
+      "title": "Halcyon Static"
+    },
+    "barcode": {
+      "format": "Code128",
+      "text": "7731 0094 2288 15"
+    },
+    "sensitive": [
+      "7731 0094 2288 15",
+      "TM4QZ8"
+    ]
+  },
+  "museum-qr": {
+    "kind": "paper",
+    "w": 900,
+    "h": 1300,
+    "fields": {
+      "type": "event",
+      "origin": "",
+      "destination": "",
+      "date": "2026-01-30",
+      "carrier": "Museo de Arte Moderno",
+      "seat": "",
+      "title": "General admission"
+    },
+    "barcode": {
+      "format": "QRCode",
+      "text": "MAM-ADM-20260130-55018834"
+    },
+    "sensitive": [
+      "55018834"
+    ]
+  },
+  "boarding-a4": {
+    "kind": "digital",
+    "w": 1240,
+    "h": 1754,
+    "fields": {
+      "type": "flight",
+      "origin": "YYZ",
+      "destination": "CDG",
+      "date": "2026-09-03",
+      "carrier": "Northwind Air",
+      "seat": "41A",
+      "flight": "NW 0870"
+    },
+    "barcode": {
+      "format": "PDF417",
+      "text": "M1FAIRWEATHER/ROSALINDEZK3V8N YYZCDGNW 0870 246Y041A0211 100"
+    },
+    "sensitive": [
+      "ZK3V8N",
+      "0372455120987"
+    ]
+  }
+}

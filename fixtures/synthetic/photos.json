@@ -1,0 +1,852 @@
+{
+ "boarding-thermal__wood-clean": {
+  "ticket": "boarding-thermal",
+  "variant": "wood-clean",
+  "width": 1920,
+  "height": 1440,
+  "corners": [
+   [
+    466.1000061035156,
+    326.8999938964844
+   ],
+   [
+    1673.699951171875,
+    375.5
+   ],
+   [
+    1663.0,
+    891.0999755859375
+   ],
+   [
+    417.70001220703125,
+    858.4000244140625
+   ]
+  ],
+  "conditions": {
+   "bg": "wood"
+  }
+ },
+ "boarding-thermal__linen-crease": {
+  "ticket": "boarding-thermal",
+  "variant": "linen-crease",
+  "width": 1920,
+  "height": 1440,
+  "corners": [
+   [
+    333.5,
+    538.7000122070312
+   ],
+   [
+    1470.9000244140625,
+    323.29998779296875
+   ],
+   [
+    1520.5,
+    829.9000244140625
+   ],
+   [
+    432.0,
+    1008.5999755859375
+   ]
+  ],
+  "conditions": {
+   "bg": "linen",
+   "crease": 2
+  }
+ },
+ "boarding-thermal__marble-curl": {
+  "ticket": "boarding-thermal",
+  "variant": "marble-curl",
+  "width": 1920,
+  "height": 1440,
+  "corners": [
+   [
+    333.79998779296875,
+    420.0
+   ],
+   [
+    1642.0,
+    480.20001220703125
+   ],
+   [
+    1555.9000244140625,
+    1012.0
+   ],
+   [
+    330.5,
+    969.7000122070312
+   ]
+  ],
+  "conditions": {
+   "bg": "marble",
+   "curl": 0.06
+  }
+ },
+ "boarding-thermal__slate-lowlight": {
+  "ticket": "boarding-thermal",
+  "variant": "slate-lowlight",
+  "width": 1920,
+  "height": 1440,
+  "corners": [
+   [
+    538.2999877929688,
+    382.79998779296875
+   ],
+   [
+    1645.4000244140625,
+    466.20001220703125
+   ],
+   [
+    1622.300048828125,
+    934.7999877929688
+   ],
+   [
+    480.8999938964844,
+    819.0999755859375
+   ]
+  ],
+  "conditions": {
+   "bg": "slate",
+   "crease": 1,
+   "low": true
+  }
+ },
+ "boarding-thermal__whitedesk": {
+  "ticket": "boarding-thermal",
+  "variant": "whitedesk",
+  "width": 1920,
+  "height": 1440,
+  "corners": [
+   [
+    520.2999877929688,
+    478.79998779296875
+   ],
+   [
+    1582.0,
+    707.0
+   ],
+   [
+    1454.199951171875,
+    1109.4000244140625
+   ],
+   [
+    475.79998779296875,
+    930.5
+   ]
+  ],
+  "conditions": {
+   "bg": "white",
+   "curl": 0.03
+  }
+ },
+ "boarding-thermal__wood-tilt-glare": {
+  "ticket": "boarding-thermal",
+  "variant": "wood-tilt-glare",
+  "width": 1920,
+  "height": 1440,
+  "corners": [
+   [
+    311.5,
+    474.6000061035156
+   ],
+   [
+    1549.0999755859375,
+    558.7000122070312
+   ],
+   [
+    1459.800048828125,
+    1064.800048828125
+   ],
+   [
+    352.3999938964844,
+    981.7000122070312
+   ]
+  ],
+  "conditions": {
+   "bg": "wood2",
+   "tilt": 0.14,
+   "glare": true,
+   "crease": 1
+  }
+ },
+ "rail-card__wood-clean": {
+  "ticket": "rail-card",
+  "variant": "wood-clean",
+  "width": 1920,
+  "height": 1440,
+  "corners": [
+   [
+    480.5,
+    485.29998779296875
+   ],
+   [
+    1538.199951171875,
+    214.0
+   ],
+   [
+    1651.0999755859375,
+    785.0
+   ],
+   [
+    622.7999877929688,
+    1020.9000244140625
+   ]
+  ],
+  "conditions": {
+   "bg": "wood"
+  }
+ },
+ "rail-card__linen-crease": {
+  "ticket": "rail-card",
+  "variant": "linen-crease",
+  "width": 1920,
+  "height": 1440,
+  "corners": [
+   [
+    273.6000061035156,
+    583.5999755859375
+   ],
+   [
+    1207.800048828125,
+    241.39999389648438
+   ],
+   [
+    1447.800048828125,
+    743.2000122070312
+   ],
+   [
+    441.1000061035156,
+    1104.5
+   ]
+  ],
+  "conditions": {
+   "bg": "linen",
+   "crease": 2
+  }
+ },
+ "rail-card__marble-curl": {
+  "ticket": "rail-card",
+  "variant": "marble-curl",
+  "width": 1920,
+  "height": 1440,
+  "corners": [
+   [
+    396.0,
+    218.10000610351562
+   ],
+   [
+    1481.199951171875,
+    623.0999755859375
+   ],
+   [
+    1274.300048828125,
+    1170.9000244140625
+   ],
+   [
+    231.6999969482422,
+    765.2999877929688
+   ]
+  ],
+  "conditions": {
+   "bg": "marble",
+   "curl": 0.06
+  }
+ },
+ "rail-card__slate-lowlight": {
+  "ticket": "rail-card",
+  "variant": "slate-lowlight",
+  "width": 1920,
+  "height": 1440,
+  "corners": [
+   [
+    441.20001220703125,
+    707.0
+   ],
+   [
+    1568.0,
+    393.8999938964844
+   ],
+   [
+    1684.5999755859375,
+    954.2999877929688
+   ],
+   [
+    605.5999755859375,
+    1251.0
+   ]
+  ],
+  "conditions": {
+   "bg": "slate",
+   "crease": 1,
+   "low": true
+  }
+ },
+ "rail-card__whitedesk": {
+  "ticket": "rail-card",
+  "variant": "whitedesk",
+  "width": 1920,
+  "height": 1440,
+  "corners": [
+   [
+    145.3000030517578,
+    538.5
+   ],
+   [
+    1419.0,
+    424.70001220703125
+   ],
+   [
+    1463.5999755859375,
+    1081.4000244140625
+   ],
+   [
+    256.1000061035156,
+    1199.300048828125
+   ]
+  ],
+  "conditions": {
+   "bg": "white",
+   "curl": 0.03
+  }
+ },
+ "rail-card__wood-tilt-glare": {
+  "ticket": "rail-card",
+  "variant": "wood-tilt-glare",
+  "width": 1920,
+  "height": 1440,
+  "corners": [
+   [
+    496.20001220703125,
+    572.5999755859375
+   ],
+   [
+    1562.0,
+    261.20001220703125
+   ],
+   [
+    1661.199951171875,
+    834.2999877929688
+   ],
+   [
+    712.0,
+    1094.300048828125
+   ]
+  ],
+  "conditions": {
+   "bg": "wood2",
+   "tilt": 0.14,
+   "glare": true,
+   "crease": 1
+  }
+ },
+ "metro-single__wood-clean": {
+  "ticket": "metro-single",
+  "variant": "wood-clean",
+  "width": 1920,
+  "height": 1440,
+  "corners": [
+   [
+    429.8999938964844,
+    225.1999969482422
+   ],
+   [
+    1695.0999755859375,
+    385.1000061035156
+   ],
+   [
+    1646.5,
+    1097.0999755859375
+   ],
+   [
+    322.6000061035156,
+    941.0999755859375
+   ]
+  ],
+  "conditions": {
+   "bg": "wood"
+  }
+ },
+ "metro-single__linen-crease": {
+  "ticket": "metro-single",
+  "variant": "linen-crease",
+  "width": 1920,
+  "height": 1440,
+  "corners": [
+   [
+    286.29998779296875,
+    327.0
+   ],
+   [
+    1534.0999755859375,
+    416.8999938964844
+   ],
+   [
+    1470.5,
+    1069.699951171875
+   ],
+   [
+    271.29998779296875,
+    1017.7000122070312
+   ]
+  ],
+  "conditions": {
+   "bg": "linen",
+   "crease": 2
+  }
+ },
+ "metro-single__marble-curl": {
+  "ticket": "metro-single",
+  "variant": "marble-curl",
+  "width": 1920,
+  "height": 1440,
+  "corners": [
+   [
+    685.2999877929688,
+    345.5
+   ],
+   [
+    1675.199951171875,
+    649.2999877929688
+   ],
+   [
+    1540.0,
+    1193.199951171875
+   ],
+   [
+    523.9000244140625,
+    893.5
+   ]
+  ],
+  "conditions": {
+   "bg": "marble",
+   "curl": 0.06
+  }
+ },
+ "metro-single__slate-lowlight": {
+  "ticket": "metro-single",
+  "variant": "slate-lowlight",
+  "width": 1920,
+  "height": 1440,
+  "corners": [
+   [
+    338.20001220703125,
+    473.70001220703125
+   ],
+   [
+    1561.199951171875,
+    203.39999389648438
+   ],
+   [
+    1717.9000244140625,
+    869.5
+   ],
+   [
+    473.6000061035156,
+    1174.300048828125
+   ]
+  ],
+  "conditions": {
+   "bg": "slate",
+   "crease": 1,
+   "low": true
+  }
+ },
+ "metro-single__whitedesk": {
+  "ticket": "metro-single",
+  "variant": "whitedesk",
+  "width": 1920,
+  "height": 1440,
+  "corners": [
+   [
+    429.0,
+    388.29998779296875
+   ],
+   [
+    1593.9000244140625,
+    632.4000244140625
+   ],
+   [
+    1435.699951171875,
+    1232.5
+   ],
+   [
+    341.8999938964844,
+    1015.4000244140625
+   ]
+  ],
+  "conditions": {
+   "bg": "white",
+   "curl": 0.03
+  }
+ },
+ "metro-single__wood-tilt-glare": {
+  "ticket": "metro-single",
+  "variant": "wood-tilt-glare",
+  "width": 1920,
+  "height": 1440,
+  "corners": [
+   [
+    126.5,
+    640.9000244140625
+   ],
+   [
+    1431.800048828125,
+    301.70001220703125
+   ],
+   [
+    1533.0,
+    990.4000244140625
+   ],
+   [
+    378.79998779296875,
+    1324.699951171875
+   ]
+  ],
+  "conditions": {
+   "bg": "wood2",
+   "tilt": 0.14,
+   "glare": true,
+   "crease": 1
+  }
+ },
+ "concert-stub__wood-clean": {
+  "ticket": "concert-stub",
+  "variant": "wood-clean",
+  "width": 1920,
+  "height": 1440,
+  "corners": [
+   [
+    536.0,
+    389.79998779296875
+   ],
+   [
+    1657.0,
+    689.4000244140625
+   ],
+   [
+    1518.800048828125,
+    1083.800048828125
+   ],
+   [
+    461.70001220703125,
+    791.4000244140625
+   ]
+  ],
+  "conditions": {
+   "bg": "wood"
+  }
+ },
+ "concert-stub__linen-crease": {
+  "ticket": "concert-stub",
+  "variant": "linen-crease",
+  "width": 1920,
+  "height": 1440,
+  "corners": [
+   [
+    516.5,
+    646.7000122070312
+   ],
+   [
+    1515.0,
+    580.7000122070312
+   ],
+   [
+    1518.0,
+    970.5
+   ],
+   [
+    567.0,
+    1014.0
+   ]
+  ],
+  "conditions": {
+   "bg": "linen",
+   "crease": 2
+  }
+ },
+ "concert-stub__marble-curl": {
+  "ticket": "concert-stub",
+  "variant": "marble-curl",
+  "width": 1920,
+  "height": 1440,
+  "corners": [
+   [
+    437.79998779296875,
+    759.4000244140625
+   ],
+   [
+    1394.0,
+    471.29998779296875
+   ],
+   [
+    1481.800048828125,
+    820.5999755859375
+   ],
+   [
+    566.9000244140625,
+    1124.800048828125
+   ]
+  ],
+  "conditions": {
+   "bg": "marble",
+   "curl": 0.06
+  }
+ },
+ "concert-stub__slate-lowlight": {
+  "ticket": "concert-stub",
+  "variant": "slate-lowlight",
+  "width": 1920,
+  "height": 1440,
+  "corners": [
+   [
+    271.3999938964844,
+    476.3999938964844
+   ],
+   [
+    1588.800048828125,
+    323.8999938964844
+   ],
+   [
+    1620.699951171875,
+    800.0
+   ],
+   [
+    388.5,
+    977.9000244140625
+   ]
+  ],
+  "conditions": {
+   "bg": "slate",
+   "crease": 1,
+   "low": true
+  }
+ },
+ "concert-stub__whitedesk": {
+  "ticket": "concert-stub",
+  "variant": "whitedesk",
+  "width": 1920,
+  "height": 1440,
+  "corners": [
+   [
+    372.6000061035156,
+    785.5
+   ],
+   [
+    1579.699951171875,
+    287.20001220703125
+   ],
+   [
+    1780.5,
+    746.9000244140625
+   ],
+   [
+    501.70001220703125,
+    1250.9000244140625
+   ]
+  ],
+  "conditions": {
+   "bg": "white",
+   "curl": 0.03
+  }
+ },
+ "concert-stub__wood-tilt-glare": {
+  "ticket": "concert-stub",
+  "variant": "wood-tilt-glare",
+  "width": 1920,
+  "height": 1440,
+  "corners": [
+   [
+    429.29998779296875,
+    412.0
+   ],
+   [
+    1502.4000244140625,
+    544.7999877929688
+   ],
+   [
+    1493.300048828125,
+    979.5
+   ],
+   [
+    317.20001220703125,
+    822.5
+   ]
+  ],
+  "conditions": {
+   "bg": "wood2",
+   "tilt": 0.14,
+   "glare": true,
+   "crease": 1
+  }
+ },
+ "museum-qr__wood-clean": {
+  "ticket": "museum-qr",
+  "variant": "wood-clean",
+  "width": 1440,
+  "height": 1920,
+  "corners": [
+   [
+    58.5,
+    409.79998779296875
+   ],
+   [
+    897.0,
+    209.60000610351562
+   ],
+   [
+    1131.800048828125,
+    1399.4000244140625
+   ],
+   [
+    368.29998779296875,
+    1567.199951171875
+   ]
+  ],
+  "conditions": {
+   "bg": "wood"
+  }
+ },
+ "museum-qr__linen-crease": {
+  "ticket": "museum-qr",
+  "variant": "linen-crease",
+  "width": 1440,
+  "height": 1920,
+  "corners": [
+   [
+    593.0,
+    442.70001220703125
+   ],
+   [
+    1314.4000244140625,
+    684.0
+   ],
+   [
+    955.0,
+    1668.800048828125
+   ],
+   [
+    266.8999938964844,
+    1451.699951171875
+   ]
+  ],
+  "conditions": {
+   "bg": "linen",
+   "crease": 2
+  }
+ },
+ "museum-qr__marble-curl": {
+  "ticket": "museum-qr",
+  "variant": "marble-curl",
+  "width": 1440,
+  "height": 1920,
+  "corners": [
+   [
+    412.8999938964844,
+    466.0
+   ],
+   [
+    1134.0,
+    410.70001220703125
+   ],
+   [
+    1172.5,
+    1500.199951171875
+   ],
+   [
+    488.3999938964844,
+    1533.9000244140625
+   ]
+  ],
+  "conditions": {
+   "bg": "marble",
+   "curl": 0.06
+  }
+ },
+ "museum-qr__slate-lowlight": {
+  "ticket": "museum-qr",
+  "variant": "slate-lowlight",
+  "width": 1440,
+  "height": 1920,
+  "corners": [
+   [
+    301.20001220703125,
+    186.8000030517578
+   ],
+   [
+    1206.5999755859375,
+    309.20001220703125
+   ],
+   [
+    964.5,
+    1656.4000244140625
+   ],
+   [
+    97.19999694824219,
+    1487.4000244140625
+   ]
+  ],
+  "conditions": {
+   "bg": "slate",
+   "crease": 1,
+   "low": true
+  }
+ },
+ "museum-qr__whitedesk": {
+  "ticket": "museum-qr",
+  "variant": "whitedesk",
+  "width": 1440,
+  "height": 1920,
+  "corners": [
+   [
+    509.5,
+    188.0
+   ],
+   [
+    1355.4000244140625,
+    504.8999938964844
+   ],
+   [
+    858.0999755859375,
+    1735.300048828125
+   ],
+   [
+    41.70000076293945,
+    1445.5
+   ]
+  ],
+  "conditions": {
+   "bg": "white",
+   "curl": 0.03
+  }
+ },
+ "museum-qr__wood-tilt-glare": {
+  "ticket": "museum-qr",
+  "variant": "wood-tilt-glare",
+  "width": 1440,
+  "height": 1920,
+  "corners": [
+   [
+    494.29998779296875,
+    440.29998779296875
+   ],
+   [
+    1287.4000244140625,
+    554.2000122070312
+   ],
+   [
+    1071.0,
+    1688.0999755859375
+   ],
+   [
+    352.3999938964844,
+    1582.800048828125
+   ]
+  ],
+  "conditions": {
+   "bg": "wood2",
+   "tilt": 0.14,
+   "glare": true,
+   "crease": 1
+  }
+ }
+}
